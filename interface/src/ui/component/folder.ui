@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <!-- Main window container -->
+  <object class="GtkBox" id="folder">
+    <property name="orientation">vertical</property>
+    <property name="spacing">20</property>
+    <property name="can-focus">false</property>
+    <style>
+        <class name="bg-muted"/>
+    </style>
+    <child>
+        <object class="GtkButton" id="dropdown_btn">
+            <property name="halign">end</property> <!-- Example folder name -->
+            <property name="label">...</property> <!-- Example folder name -->
+            <style>
+                <class name="dropdown_btn"/>
+            </style>
+        </object>
+    </child>
+    <child>
+        <object class="GtkImage" id="icon">
+          <property name="pixel-size">80</property>
+        </object>
+    </child>
+    <child>
+      <object class="GtkBox" id="folder_info">
+        <property name="orientation">vertical</property>
+        <property name="spacing">5</property>
+        <!-- Folder Name -->
+        <child>
+          <object class="GtkLabel" id="folder_name">
+            <property name="label">My Folder</property> <!-- Example folder name -->
+            <property name="css-classes">title-2</property> <!-- Example folder name -->
+          </object>
+        </child>
+
+        <!-- Folder Size -->
+        <child>
+          <object class="GtkLabel" id="folder_size">
+            <property name="label">Size: 1.2 GB</property> <!-- Example size -->
+          </object>
+        </child>
+      </object>
+    </child>
+  </object>
+</interface>
+

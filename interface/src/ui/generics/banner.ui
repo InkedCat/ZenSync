@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <object class="GtkBox" id="banner">
+    <property name="orientation">horizontal</property>
+    <property name="spacing">0</property>
+    <property name="hexpand">True</property>
+    <property name="vexpand">False</property>
+
+    <!-- Set background color to blue -->
+    <style>
+      <class name="blue-banner"/>
+    </style>
+    <child>
+      <object class="GtkBox">
+        <property name="spacing">0</property>
+        <property name="margin-top">8</property>
+        <property name="margin-bottom">8</property>
+        <property name="orientation">horizontal</property>
+        <property name="homogeneous">True</property>
+        <child>
+            <object class="GtkLabel"></object>
+        </child>
+        <child>
+          <object class="GtkLabel" id="message">
+            <property name="hexpand">True</property>
+            <property name="justify">center</property>
+            <property name="lines">3</property>
+            <property name="use-underline">False</property>
+            <property name="selectable">False</property>
+            <property name="wrap">True</property>
+            <property name="wrap-mode">word-char</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkButton">
+            <property name="halign">end</property>
+            <style>
+              <class name="blue-banner"/>
+            </style>
+            <property name="icon-name">application-exit-symbolic</property>
+          </object>
+        </child>
+      </object>
+    </child>
+  </object>
+</interface>
+

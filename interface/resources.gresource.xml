@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gresources>
+    <gresource>
+        <file>window/home.ui</file>
+        <file>window/welcome.ui</file>
+        <file>window/username.ui</file>
+        <file>window/keys.ui</file>
+        <file>window/preferences-page.ui</file>
+        <file>component/properties.ui</file>
+        <file>component/folder.ui</file>
+        <file>generics/banner.ui</file>
+    </gresource>
+    <gresource>
+        <file>style/utility.css</file>
+    </gresource>
+</gresources>
+

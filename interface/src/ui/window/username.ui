@@ -1,0 +1,60 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Created with Cambalache 0.94.1 -->
+<interface>
+  <!-- interface-name keys2.ui -->
+  <object class="GtkWindow" id="main_window">
+    <property name="default-height">800</property>
+    <property name="default-width">800</property>
+    <property name="title">Zen-sync</property>
+    <child>
+      <object class="GtkBox">
+        <property name="halign">center</property>
+        <property name="orientation">vertical</property>
+        <property name="valign">center</property>
+        <child>
+          <object class="GtkImage">
+            <property name="icon-name">avatar-default-symbolic</property>
+            <property name="margin-bottom">32</property>
+            <property name="opacity">0.4</property>
+            <property name="pixel-size">100</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkLabel">
+            <property name="css-classes">title-1</property>
+            <property name="label">Let me know your name</property>
+            <property name="margin-bottom">8</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkLabel">
+            <property name="css-classes">body</property>
+            <property name="label">It will be used as a username.</property>
+            <property name="margin-bottom">16</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkEntry" id="username_input"/>
+        </child>
+        <child>
+          <object class="GtkBox">
+            <property name="homogeneous">True</property>
+            <property name="margin-top">16</property>
+            <property name="spacing">16</property>
+            <child>
+              <object class="GtkButton" id="cancel_btn">
+                <property name="label">cancel</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkButton" id="confirm_btn">
+                <property name="css-classes">suggested-action</property>
+                <property name="label">confirm</property>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
+  </object>
+</interface>

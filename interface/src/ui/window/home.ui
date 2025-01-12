@@ -1,0 +1,219 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<interface>
+  <object class="GtkWindow" id="main_window">
+    <property name="default-height">800</property>
+    <property name="default-width">800</property>
+    <property name="title">Zen-sync</property>
+    <child>
+      <object class="GtkBox">
+        <!--<property name="margin-end">64</property>-->
+        <property name="orientation">vertical</property>
+        <property name="orientation">vertical</property>
+        <child> 
+            <object class="GtkBox" id="banner_container">
+            </object>
+        </child>
+        <child>
+          <object class="GtkBox">
+            <property name="halign">end</property>
+            <property name="margin-end">64</property>
+            <property name="margin-top">24</property>
+            <property name="margin-start">64</property>
+            <property name="margin-bottom">32</property>
+            <property name="spacing">16</property>
+            <child>
+              <object class="GtkBox" id="connection_btn">
+                <property name="spacing">5</property>
+                <property name="halign">center</property>
+                <property name="valign">center</property>
+                <child>
+                    <object class="GtkDrawingArea" id="connection_pulse">
+                        <property name="width-request">8</property>
+                        <property name="halign">center</property>
+                        <property name="valign">center</property>
+                        <property name="height-request">8</property>
+                        <style>
+                          <class name="pulse-danger"/>
+                        </style>
+                    </object>
+                </child>
+                <child>
+                    <object class="GtkLabel" id="connection_info">
+                        <property name="label">offline</property>
+                    </object>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="GtkButton" id="settings_btn">
+                <property name="label">settings</property>
+                <property name="opacity">0.75</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkButton" id="messages_box_btn">
+                <property name="icon-name">chat-message-new-symbolic</property>
+                <property name="opacity">0.75</property>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="GtkBox">
+            <property name="homogeneous">True</property>
+            <property name="margin-end">64</property>
+            <property name="margin-start">64</property>
+            <child>
+              <object class="GtkBox">
+                <property name="halign">start</property>
+                <property name="orientation">vertical</property>
+                <property name="valign">center</property>
+                <child>
+                  <object class="GtkLabel" id="welcome_sentence">
+                    <property name="css-classes">title-xl</property>
+                    <property name="halign">start</property>
+                    <property name="label">Welcome back, guest.</property>
+                    <property name="margin-bottom">8</property>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="css-classes">body</property>
+                    <property name="halign">start</property>
+                    <property name="label">What would you like to do today ?</property>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkBox">
+                    <property name="halign">center</property>
+                    <property name="margin-top">24</property>
+                    <property name="spacing">16</property>
+                    <property name="valign">start</property>
+                    <child>
+                      <object class="GtkButton" id="select_folder_button">
+                        <property name="css-classes">suggested-action</property>
+                        <property name="label">add a folder</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="select_file_button">
+                        <property name="label">add a file</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="synchronize_button">
+                        <property name="halign">start</property>
+                        <property name="label">synchronize all</property>
+                        <property name="tooltip-text">Synchroniser au serveur distant</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="restore_button">
+                        <property name="halign">start</property>
+                        <property name="label">restore all</property>
+                        <property name="tooltip-text">Récupérer les données du serveur</property>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="GtkBox">
+                <property name="halign">end</property>
+                <property name="spacing">48</property>
+                <property name="valign">center</property>
+                <child>
+                  <object class="GtkBox">
+                    <property name="halign">center</property>
+                    <property name="orientation">vertical</property>
+                    <property name="valign">center</property>
+                    <child>
+                      <object class="GtkImage">
+                        <property name="icon-name">emblem-synchronizing-symbolic</property>
+                        <property name="margin-bottom">16</property>
+                        <property name="opacity">0.4</property>
+                        <property name="pixel-size">48</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="synchronization_rate">
+                        <property name="css-classes">title-1</property>
+                        <property name="label">0.0%</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="css-classes">body</property>
+                        <property name="label">synchronized</property>
+                        <property name="margin-bottom">16</property>
+                        <property name="natural-wrap-mode">word</property>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkBox">
+                    <property name="halign">center</property>
+                    <property name="orientation">vertical</property>
+                    <property name="valign">center</property>
+                    <child>
+                      <object class="GtkImage">
+                        <property name="icon-name">document-open-symbolic</property>
+                        <property name="margin-bottom">16</property>
+                        <property name="opacity">0.4</property>
+                        <property name="pixel-size">48</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="folders_count">
+                        <property name="css-classes">title-1</property>
+                        <property name="label">10</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="css-classes">body</property>
+                        <property name="label">elements</property>
+                        <property name="margin-bottom">16</property>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="GtkBox" id="no_folders">
+            <property name="margin-top">150</property>
+            <property name="orientation">vertical</property>
+            <child>
+              <object class="GtkImage">
+                <property name="icon-name">folder-symbolic</property>
+                <property name="margin-bottom">16</property>
+                <property name="opacity">0.2</property>
+                <property name="pixel-size">96</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkLabel">
+                <property name="label">No folders ...</property>
+                <property name="opacity">0.6</property>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+            <object class="GtkFlowBox" id="folders_container">
+                <property name="margin-top">32</property>
+                <property name="margin-end">64</property>
+                <property name="margin-start">64</property>
+                <property name="row-spacing">24</property>
+                <property name="column-spacing">24</property>
+            </object>
+        </child>
+      </object>
+    </child>
+  </object>
+</interface>

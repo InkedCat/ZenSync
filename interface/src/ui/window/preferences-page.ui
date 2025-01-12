@@ -1,0 +1,109 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<interface>
+  <requires lib="libadwaita" version="0.7.1"/>
+  <object class="GtkDialog" id="widget">
+    <child>
+      <object class="GtkScrolledWindow">
+        <property name="child">
+          <object class="GtkBox">
+            <property name="orientation">vertical</property>
+            <property name="valign">start</property>
+            <child>
+              <object class="GtkImage">
+                <property name="icon-name">avatar-default</property>
+                <property name="margin-top">16</property>
+                <property name="pixel-size">128</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkBox">
+                <property name="orientation">vertical</property>
+                <child>
+                  <object class="GtkLabel" id="username">
+                    <property name="justify">center</property>
+                    <property name="label" translatable="yes">Avatar</property>
+                    <property name="wrap">True</property>
+                    <property name="wrap-mode">word-char</property>
+                    <style>
+                      <class name="title"/>
+                      <class name="title-1"/>
+                    </style>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="AdwClamp">
+                <property name="child">
+                  <object class="GtkBox">
+                    <property name="orientation">vertical</property>
+                    <property name="spacing">12</property>
+                    <property name="valign">center</property>
+                    <child>
+                      <object class="AdwPreferencesGroup">
+                        <child>
+                          <object class="AdwSwitchRow" id="secure_mod">
+                            <property name="active">True</property>
+                            <property name="subtitle">check app conf securely.</property>
+                            <property name="title" translatable="yes">Secure mode (sudo required)</property>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="AdwActionRow">
+                            <property name="title" translatable="yes">Archive folder location</property>
+                            <child>
+                              <object class="GtkButton">
+                                <property name="action-name">avatar.open</property>
+                                <property name="valign">center</property>
+                                <child>
+                                  <object class="GtkBox">
+                                    <property name="spacing">6</property>
+                                    <child>
+                                      <object class="GtkImage">
+                                        <property name="icon-name">document-open-symbolic</property>
+                                      </object>
+                                    </child>
+                                    <child>
+                                      <object class="GtkLabel" id="file_chooser_label">
+                                        <property name="ellipsize">middle</property>
+                                      </object>
+                                    </child>
+                                  </object>
+                                </child>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="AdwActionRow">
+                            <property name="subtitle">frequency of server synchronizations.</property>
+                            <property name="title">Backup frequency</property>
+                            <child>
+                              <object class="GtkDropDown" id="dropdown">
+                                <property name="halign">center</property>
+                                <property name="margin-bottom">6</property>
+                                <property name="margin-top">6</property>
+                                <property name="opacity">0.6</property>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                  </object>
+                </property>
+                <property name="margin-top">32</property>
+                <property name="maximum-size">400</property>
+                <property name="tightening-threshold">300</property>
+              </object>
+            </child>
+            <style>
+              <class name="avatar-page"/>
+            </style>
+          </object>
+        </property>
+        <property name="hscrollbar-policy">never</property>
+      </object>
+    </child>
+  </object>
+</interface>

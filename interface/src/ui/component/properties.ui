@@ -1,0 +1,155 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Created with Cambalache 0.94.1 -->
+<interface>
+  <!-- interface-name preferences-page.ui -->
+  <requires lib="gtk" version="4.0"/>
+  <requires lib="libadwaita" version="1.0"/>
+  <object class="GtkDialog" id="widget">
+    <child>
+      <object class="GtkScrolledWindow">
+        <property name="child">
+          <object class="GtkBox">
+            <property name="orientation">vertical</property>
+            <property name="valign">start</property>
+            <child>
+              <object class="GtkImage" id="folder_icon">
+                <property name="icon-name">folder</property>
+                <property name="margin-top">16</property>
+                <property name="pixel-size">128</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkBox">
+                <property name="orientation">vertical</property>
+                <child>
+                  <object class="GtkLabel" id="folder_name">
+                    <property name="justify">center</property>
+                    <property name="label" translatable="yes">Home</property>
+                    <property name="wrap">True</property>
+                    <property name="wrap-mode">word-char</property>
+                    <style>
+                      <class name="title"/>
+                      <class name="title-1"/>
+                    </style>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="AdwClamp">
+                <property name="child">
+                  <object class="GtkBox">
+                    <property name="orientation">vertical</property>
+                    <property name="spacing">12</property>
+                    <property name="valign">center</property>
+                    <child>
+                      <object class="AdwPreferencesGroup">
+                        <child>
+                          <object class="AdwActionRow">
+                            <property name="subtitle">Number of folders.</property>
+                            <property name="title" translatable="yes">Folders </property>
+                            <child>
+                              <object class="GtkButton">
+                                <property name="action-name">avatar.open</property>
+                                <property name="halign">end</property>
+                                <property name="valign">center</property>
+                                <child>
+                                  <object class="GtkBox">
+                                    <child>
+                                      <object class="GtkLabel" id="folders_count">
+                                        <property name="label"></property>
+                                        <property name="margin-start">4</property>
+                                      </object>
+                                    </child>
+                                  </object>
+                                </child>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="AdwActionRow">
+                            <property name="subtitle">Number of files.</property>
+                            <property name="title" translatable="yes">Files</property>
+                            <child>
+                              <object class="GtkButton">
+                                <property name="action-name">avatar.open</property>
+                                <property name="valign">center</property>
+                                <property name="halign">end</property>
+                                <child>
+                                  <object class="GtkBox">
+                                    <child>
+                                      <object class="GtkLabel" id="files_count">
+                                          <property name="label"></property>
+                                          <property name="margin-start">4</property>
+                                      </object>
+                                    </child>
+                                  </object>
+                                </child>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="AdwActionRow">
+                            <property name="subtitle">Total size.</property>
+                            <property name="title">Size</property>
+                            <child>
+                              <object class="GtkButton">
+                                <property name="action-name">avatar.open</property>
+                                <property name="valign">center</property>
+                                <child>
+                                  <object class="GtkBox">
+                                    <property name="spacing">6</property>
+                                    <child>
+                                      <object class="GtkLabel" id="folder_size">
+                                        <property name="label"></property>
+                                      </object>
+                                    </child>
+                                  </object>
+                                </child>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="AdwActionRow">
+                            <property name="subtitle">Indicate if the folder is synchronized.</property>
+                            <property name="title">Synchronized</property>
+                            <child>
+                              <object class="GtkButton">
+                                <property name="action-name">avatar.open</property>
+                                <property name="valign">center</property>
+                                <child>
+                                  <object class="GtkBox">
+                                    <property name="spacing">6</property>
+                                    <child>
+                                      <object class="GtkLabel" id="folder_synchronized">
+                                        <property name="label">Yes</property>
+                                      </object>
+                                    </child>
+                                  </object>
+                                </child>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                  </object>
+                </property>
+                <property name="margin-top">32</property>
+                <property name="maximum-size">400</property>
+                <property name="tightening-threshold">300</property>
+              </object>
+            </child>
+            <style>
+              <class name="avatar-page"/>
+            </style>
+          </object>
+        </property>
+        <property name="hscrollbar-policy">never</property>
+      </object>
+    </child>
+  </object>
+</interface>
