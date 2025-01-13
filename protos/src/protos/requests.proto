@@ -1,0 +1,43 @@
+syntax = "proto3";
+
+package requests;
+
+import "file.proto";
+
+enum RequestType {
+    ADD = 0;
+    MOVE = 1;
+    REMOVE = 2;
+    GET = 3;
+    SYNC = 4;
+}
+
+message Request {
+    RequestType request_type = 1;
+}
+
+message RequestAdd {
+    RequestType request_type = 1;
+    file.File file = 2;
+    uint64 payoad_size = 3;
+}
+
+message RequestMove {
+    RequestType request_type = 1;
+    repeated file.FileMove files = 2;
+}
+
+message RequestRemove {
+    RequestType request_type = 1;
+    repeated file.FileRemove files = 2;
+}
+
+message RequestGet {
+    RequestType request_type = 1;
+    repeated file.FileGet files = 2;
+}
+
+message RequestSync {
+    RequestType request_type = 1;
+    file.FileSync file = 2;
+}

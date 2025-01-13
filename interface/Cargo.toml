@@ -1,6 +1,6 @@
 [package]
 name = "my-gtk-app"
-version ="0.1.0"
+version = "0.1.0"
 edition = "2021"
 build = "./build.rs"
 
@@ -18,6 +18,8 @@ tokio = { version = "1", features = ["full"] }
 reqwest = { version = "0.11", features = ["json", "blocking"] }
 regex = "1.5"
 chrono = "0.4"
+client = { path = "../client" }
+commons = { path = "../commons" }
 
 [env]
 CONF_PATH = "./zen-sync/conf.json"

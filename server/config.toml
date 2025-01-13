@@ -1,0 +1,7 @@
+[server]
+port = 8080
+folder = "/var/zsync/users"
+private_key = "yumRI6OVbnWZvEvaOUVdIGh2lUhxwWidVpL11pag4bY="
+
+[peer."KlNSvGgUHt8XILaa4TKX7x2BCsDCCYxGp3Rbyxw8hXI="]
+username = "squensay"

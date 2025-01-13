@@ -11,7 +11,7 @@ fn main() {
         .args([
             "./resources.gresource.xml",
             &format!("--target={}/resources.gresource", out_dir),
-            "--sourcedir=/home/kilian/Documents/my-gtk-app/src/ui",
+            "--sourcedir=./src/ui",
         ])
         .status()
         .expect("Failed to compile resources");

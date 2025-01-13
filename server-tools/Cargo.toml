@@ -1,0 +1,13 @@
+[package]
+name = "zen-sync-server-tools"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+x25519-dalek = { version = "2.0.1", features = ["static_secrets"] }
+anyhow = "1.0.94"
+base64 = "0.22.1"
+clap = { version = "4.5.23", features = ["derive"] }
+snow = "0.9.6"
+thiserror = "2.0.6"
+commons = { path = "../commons" }

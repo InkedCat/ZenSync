@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package responses;
+
+import "file.proto";
+
+enum ResponseType {
+    GET = 0;
+    SYNC = 1;
+}
+
+message Response {
+    ResponseType response_type = 1;
+}
+
+message ResponseGet {
+    ResponseType response_type = 1;
+    repeated file.File files = 2;
+}
+
+message ResponseSync {
+    ResponseType response_type = 1;
+    file.File file = 2;
+    uint64 payload_size = 3;
+}

@@ -1,0 +1,13 @@
+[package]
+name = "protos"
+version = "0.1.0"
+edition = "2021"
+resolver = "2"
+build = "build.rs"
+
+[dependencies]
+prost = "0.13.4"
+prost-types = "0.13.4"
+
+[build-dependencies]
+prost-build = "0.13.4"
