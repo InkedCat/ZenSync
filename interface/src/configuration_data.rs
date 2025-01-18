@@ -1,22 +1,21 @@
-use std::env;
-use std::io;
-use std::path::Path;
-use std::fs::{self, Metadata, create_dir_all};
-use std::time::SystemTime;
 use crate::utils::filesystem;
 use crate::utils::messages;
-use crate::utils::{integrity, conf_file};
-use serde::{Deserialize, Serialize};
-use filesystem::{read_data, write_data, create_file, check_file_exists};
-use serde_json::Result;
+use crate::utils::{conf_file, integrity};
 use dirs::home_dir;
+use filesystem::{check_file_exists, create_file, read_data, write_data};
+use serde::{Deserialize, Serialize};
+use serde_json::Result;
+use std::env;
+use std::fs::{self, create_dir_all, Metadata};
+use std::io;
+use std::path::Path;
 use std::path::PathBuf;
-
+use std::time::SystemTime;
 
 pub struct FolderInfo {
     pub folders_count: usize,
     pub files_count: usize,
-    pub size: u64
+    pub size: u64,
 }
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
@@ -146,58 +145,64 @@ impl FolderData {
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct Frequency {
-    pub frequency: String 
+    pub frequency: String,
 }
 
 impl Frequency {
-    pub const valid_frequencies: [&str; 12] = ["Aucune","1min","5min","30min","1hr","2hr","4hr","6hr","12hr","24hr","2days","7days"];
+    pub const valid_frequencies: [&str; 12] = [
+        "Aucune", "1min", "5min", "30min", "1hr", "2hr", "4hr", "6hr", "12hr", "24hr", "2days",
+        "7days",
+    ];
     pub fn isValid(&self) -> bool {
         return Self::valid_frequencies.contains(&self.frequency.as_str());
     }
 }
 
-
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct ConfigurationData {
     pub folders: Vec<FolderData>,
-    pub frequency: Frequency, 
+    pub frequency: Frequency,
     pub username: String,
     pub pub_key: String,
-    pub private_key: String
+    pub private_key: String,
 }
 
 impl ConfigurationData {
     fn clone(&self) -> ConfigurationData {
         return ConfigurationData {
             folders: self.folders.clone(),
-            frequency: Frequency {frequency:String::from("")},
+            frequency: Frequency {
+                frequency: String::from(""),
+            },
             username: self.username.clone(),
-            pub_key:String::from(""),
-            private_key:String::from("")
+            pub_key: String::from(""),
+            private_key: String::from(""),
         };
     }
 
     // Permet de récupérer les données de la configuration actuelle de l'application.
-    pub fn get_data(&mut self){
+    pub fn get_data(&mut self) {
         let conf_path = conf_file::get_conf_path();
         let file_path = Path::new(&conf_path);
 
-        if !file_path.exists(){
+        if !file_path.exists() {
             let configuration = ConfigurationData {
-                folders:vec![], 
-                frequency:Frequency{frequency:String::from("")},
-                username:String::from("guest"),
-                private_key:String::from(""),
-                pub_key:String::from("")
+                folders: vec![],
+                frequency: Frequency {
+                    frequency: String::from(""),
+                },
+                username: String::from("guest"),
+                private_key: String::from(""),
+                pub_key: String::from(""),
             };
 
             let configuration_json = serde_json::to_string(&configuration);
-            if(!configuration_json.is_ok()){
+            if (!configuration_json.is_ok()) {
                 println!("Erreur d'écriture de données dans le fichier de conf. Veuillez redémarrer l'application");
             }
-        
+
             let writed = write_data(&conf_path, &configuration_json.unwrap());
-            if !writed.is_ok(){
+            if !writed.is_ok() {
                 panic!("Failed to write data to conf file");
             }
         }
@@ -210,7 +215,7 @@ impl ConfigurationData {
         }
 
         let configuration: Result<ConfigurationData> = serde_json::from_str(&data.unwrap());
-        if(!configuration.is_ok()){
+        if (!configuration.is_ok()) {
             panic!("error");
         }
 
@@ -223,13 +228,13 @@ impl ConfigurationData {
         self.pub_key = loaded_configuration.pub_key;
     }
 
-    pub fn write_data(&mut self){
+    pub fn write_data(&mut self) {
         let conf_path = conf_file::get_conf_path();
 
         // Si le fichier de config n'existe pas on le créer
         let configuration_json = serde_json::to_string(&self);
         let writed = write_data(&conf_path, &configuration_json.unwrap());
-        if !writed.is_ok(){
+        if !writed.is_ok() {
             panic!("Failed to write data to conf file");
         }
         integrity::update_hash();
@@ -251,10 +256,17 @@ impl ConfigurationData {
         } else {
             messages::display_flash_message("Le dossier ou fichier que vous essayez d'enregistrer existe déjà ou il est présent dans un des dossier sauvegardés");
         }
-    }    
+    }
 
-    pub fn remove_folder(&mut self, path: &str){        
+    pub fn remove_folder(&mut self, path: &str) {
         self.folders.retain(|f| f.path != path); // This will remove the folder by its path
     }
-}
 
+    pub fn folder_is_sync(&mut self, path: &str) {
+        let folder = self.folders.iter_mut().find(|f| f.path == path);
+        if let Some(folder) = folder {
+            folder.is_sync = true;
+        }
+        self.write_data();
+    }
+}

@@ -23,6 +23,7 @@ use once_cell::sync::Lazy;
 use reqwest::Error;
 use std::cell::Cell;
 use std::cell::RefCell;
+use std::path::PathBuf;
 use std::process::{exit, Command};
 use std::rc::Rc;
 use std::sync::Arc;
@@ -161,10 +162,13 @@ pub fn setup_window(builder: &Builder) {
             let mut file_list: Vec<String> = Vec::new();
             for folder in folders {
                 match folder.file_type {
-                    FileType::Folder => folder_list.push(folder.path),
-                    FileType::File => file_list.push(folder.path),
+                    FileType::Folder => folder_list.push(folder.clone().path),
+                    FileType::File => file_list.push(folder.clone().path),
                 }
+                configuration.folder_is_sync(folder.clone().path.as_str());
             }
+            update_folders_displayed(&configuration);
+            configuration.write_data();
 
             let mut files = None;
             if file_list.len() > 1 {
@@ -229,46 +233,21 @@ pub fn setup_window(builder: &Builder) {
     }));
 
     restore_button.connect_clicked(clone!(move |_| {
-        CONFIGURATION.with(|configuration| {
-            let mut configuration = configuration.borrow_mut();
-            let folders = configuration.folders.clone();
+        ZSYNC_TX.with(|tx| {
+            let tx = tx.borrow_mut().clone();
 
-            let mut folder_list: Vec<String> = Vec::new();
-            let mut file_list: Vec<String> = Vec::new();
-            for folder in folders {
-                match folder.file_type {
-                    FileType::Folder => folder_list.push(folder.path),
-                    FileType::File => file_list.push(folder.path),
-                }
-            }
-
-            ZSYNC_TX.with(|tx| {
-                let tx = tx.borrow_mut().clone();
-                thread::spawn(move || {
-                    if let Some(tx) = tx {
-                        for file in file_list {
-                            let add_command = format!("sync {}", file);
-                            match tx.blocking_send(add_command) {
-                                Ok(_) => {}
-                                Err(e) => {
-                                    println!("Error sending command to zsync: {}", e);
-                                }
-                            }
-                        }
-
-                        for folder in folder_list {
-                            let add_command = format!("sync_folder {}", folder);
-                            match tx.blocking_send(add_command) {
-                                Ok(_) => {}
-                                Err(e) => {
-                                    println!("Error sending command to zsync: {}", e);
-                                }
-                            }
+            thread::spawn(move || {
+                if let Some(tx) = tx {
+                    let sync_command = format!("sync_folder /");
+                    match tx.blocking_send(sync_command) {
+                        Ok(_) => {}
+                        Err(e) => {
+                            println!("Error sending command to zsync: {}", e);
                         }
                     }
-                })
-            })
-        });
+                }
+            });
+        })
     }));
 }
 
@@ -315,6 +294,14 @@ pub fn create_folder_element(folder_data: FolderData) -> gtk::Box {
 
     let folder_data_clone = folder_data.clone();
     sync_button.connect_clicked(move |btn| {
+        CONFIGURATION.with(|configuration| {
+            let mut configuration = configuration.borrow_mut();
+            configuration.get_data();
+            configuration.folder_is_sync(folder_data_clone.path.as_str());
+            configuration.write_data();
+            update_folders_displayed(&configuration);
+        });
+
         ZSYNC_TX.with(|tx| {
             let tx = tx.borrow_mut().clone();
             let folder_data_clone = folder_data_clone.clone();

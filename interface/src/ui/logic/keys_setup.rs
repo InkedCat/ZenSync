@@ -1,22 +1,22 @@
 #![allow(warnings)]
-use openssl::rsa::{Rsa, Padding};
-use openssl::pkey::Private;
-use openssl::x509::X509;
+use crate::persistance::window_persistance::change_current_window;
+use crate::{APP, APP_BUILDER, APP_WINDOW, CONFIGURATION};
 use gdk::Display;
 use glib::clone;
 use gtk::gdk;
 use gtk::prelude::*;
-use gtk::{gio, glib, Application, Builder,Entry, FileChooserDialog, ResponseType, Window};
+use gtk::{gio, glib, Application, Builder, Entry, FileChooserDialog, ResponseType, Window};
 use gtk::{Button, FileChooserAction};
-use crate::{APP, APP_BUILDER, APP_WINDOW, CONFIGURATION};
 use gtk::{CssProvider, StyleContext};
 use once_cell::sync::Lazy;
+use openssl::pkey::Private;
+use openssl::rsa::{Padding, Rsa};
+use openssl::x509::X509;
 use std::cell::Cell;
 use std::cell::RefCell;
 use std::env;
 use std::rc::Rc;
 use std::sync::Mutex;
-use crate::persistance::window_persistance::{change_current_window };
 
 //pub fn setup_window(builder: &Builder){
 fn generate_keys() -> Result<(String, String), Box<dyn std::error::Error>> {
@@ -37,29 +37,18 @@ fn generate_keys() -> Result<(String, String), Box<dyn std::error::Error>> {
 }
 
 pub fn setup_window(builder: &Builder) {
-    match generate_keys() {
-        Ok((public_key, private_key)) => {
-           let pub_key_label:gtk::Entry = builder.object("public_key").expect("Failed to load pub key label"); 
-           pub_key_label.set_text(&public_key);
-            
-           let confirm_btn: Button = builder.object("confirm_btn").expect("Failed to load confirm btn");
-           let cancel_btn: Button = builder.object("cancel_btn").expect("Failed to load cancel btn");
+    let confirm_btn: Button = builder
+        .object("confirm_btn")
+        .expect("Failed to load confirm btn");
+    let cancel_btn: Button = builder
+        .object("cancel_btn")
+        .expect("Failed to load cancel btn");
 
-            confirm_btn.connect_clicked(move |_|{
-                CONFIGURATION.with(|conf|{
-                    let mut conf = conf.borrow_mut();
-                    conf.pub_key = public_key.clone();
-                    conf.private_key = private_key.clone();
-                });
-                change_current_window("/window/home.ui");
-            });
+    confirm_btn.connect_clicked(move |_| {
+        change_current_window("/window/home.ui");
+    });
 
-            cancel_btn.connect_clicked(move |_|{
-                change_current_window("/window/username.ui");
-            });
-        }
-        Err(e) => eprintln!("Error generating keys: {}", e),
-    };
-
+    cancel_btn.connect_clicked(move |_| {
+        change_current_window("/window/username.ui");
+    });
 }
-
