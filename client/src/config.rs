@@ -1,5 +1,5 @@
 use serde::Deserialize;
-use std::{collections::HashMap, fs};
+use std::{collections::HashMap, fs, path::PathBuf};
 use thiserror::Error;
 
 #[derive(Error, Debug)]
@@ -26,7 +26,7 @@ pub struct Peer {
     pub public_key: String,
 }
 
-pub fn get_config(path: &str) -> Result<Config, ConfigParsingError> {
+pub fn get_config(path: &PathBuf) -> Result<Config, ConfigParsingError> {
     let config_file = fs::read_to_string(path)?;
     let config = toml::from_str(&config_file)?;
 

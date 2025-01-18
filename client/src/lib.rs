@@ -6,6 +6,7 @@ use std::{collections::VecDeque, path::PathBuf};
 use anyhow::Context;
 use base64::prelude::BASE64_STANDARD;
 use base64::Engine;
+use dirs_next::config_dir;
 use tokio::{
     fs,
     io::{AsyncReadExt, AsyncWriteExt, BufReader},
@@ -14,7 +15,9 @@ use tokio::{
 };
 
 use commons::{file_manager, packeter};
-use protos::{create_file_get, create_file_sync, FileGet, ResponseGet, ResponseSync};
+use protos::{
+    create_file_get, create_file_sync, File, FileGet, FileType, ResponseGet, ResponseSync,
+};
 
 async fn send_file(handler: &mut packeter::Handler, file_path: &PathBuf) -> anyhow::Result<()> {
     let file = tokio::fs::File::open(&file_path).await?;
@@ -41,7 +44,7 @@ async fn send_file(handler: &mut packeter::Handler, file_path: &PathBuf) -> anyh
 
     Ok(())
 }
-
+// TODO: SPACES
 async fn send_folder(handler: &mut packeter::Handler, folder: &PathBuf) -> anyhow::Result<()> {
     let mut dir = fs::read_dir(folder).await?;
     while let Ok(entry) = dir.next_entry().await {
@@ -77,6 +80,8 @@ async fn receive_file(
         if !fs::try_exists(&parent).await? {
             fs::create_dir_all(&parent).await?;
         }
+    } else {
+        return Err(anyhow::anyhow!("No parent path"));
     }
 
     let (mut temp_file, temp_path) = file_manager::open_temporary_file(&file_path).await?;
@@ -145,26 +150,35 @@ async fn send_request_sync(handler: &mut packeter::Handler, path: String) -> any
     Ok(())
 }
 
-async fn send_folder_request_sync(
+async fn process_response_get(
     mut handler: &mut packeter::Handler,
-    folder: &PathBuf,
+    files: Vec<File>,
 ) -> anyhow::Result<()> {
-    let mut dir = fs::read_dir(folder).await?;
-    while let Ok(entry) = dir.next_entry().await {
-        let entry = match entry {
-            Some(entry) => entry,
-            None => break,
-        };
-
-        let path = entry.path();
-        if path.is_dir() {
-            Box::pin(send_folder(handler, &path)).await?;
+    for file in files {
+        if file.file_type == FileType::Directory as i32 {
+            Box::pin(process_response_get(handler, file.childrens)).await?;
         } else {
-            send_request_sync(&mut handler, path.into_os_string().into_string().unwrap()).await?;
+            send_request_sync(&mut handler, file.path).await?;
 
             receive_response_sync(&mut handler).await?;
         }
     }
+
+    Ok(())
+}
+
+async fn send_folder_request_sync(
+    handler: &mut packeter::Handler,
+    folder: &PathBuf,
+) -> anyhow::Result<()> {
+    let file_get = create_file_get(folder.to_str().unwrap().to_string());
+    let mut files = Vec::new();
+    files.push(file_get);
+    send_request_get(handler, files).await?;
+
+    let response = receive_response_get(handler).await?;
+
+    process_response_get(handler, response.files).await?;
 
     Ok(())
 }
@@ -184,7 +198,13 @@ pub async fn handle(
     tx_sync: &mut mpsc::Sender<String>,
     tx_add: &mut mpsc::Sender<String>,
 ) -> anyhow::Result<()> {
-    let config = config::get_config("config.toml")
+    let config_path = if let Some(config_path) = config_dir() {
+        config_path
+    } else {
+        return Err(anyhow::anyhow!("Failed to get config path"));
+    };
+
+    let config = config::get_config(&config_path.join("zen-sync").join("config.toml"))
         .with_context(|| format!("Failed to parse config file at {}", "config.toml"))?;
 
     let home_config = config.peer.get("home").unwrap();

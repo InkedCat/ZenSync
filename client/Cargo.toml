@@ -18,3 +18,4 @@ tokio = { version = "1.42.0", features = ["full"] }
 toml = "0.8.19"
 protos = { path = "../protos" }
 commons = { path = "../commons" }
+dirs-next = "2.0.0"

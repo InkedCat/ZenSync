@@ -146,7 +146,11 @@ async fn handle_delete(
             continue;
         }
 
-        fs::remove_file(virtual_path).await?;
+        if virtual_path.is_dir() {
+            fs::remove_dir_all(virtual_path).await?;
+        } else {
+            fs::remove_file(virtual_path).await?;
+        }
     }
 
     Ok(())
